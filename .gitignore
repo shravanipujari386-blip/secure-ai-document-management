@@ -1,10 +1,31 @@
+# Java build output
+
 target/
+
+# Eclipse IDE files
+
+.metadata/
 .classpath
 .project
 .settings/
+
+# Other IDE files
+
 .idea/
 *.iml
+
+# Environment variables and local configuration
+
 .env
+.env.*
+!.env.example
 application-local.properties
+
+# Uploaded documents — do not publish private files
+
 uploads/
-.DS_Store
+secure-uploads/
+
+# Log files
+
+*.log
