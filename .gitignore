@@ -1,8 +1,8 @@
-# Java build output
+# Maven build files
 
 target/
 
-# Eclipse IDE files
+# Eclipse settings
 
 .metadata/
 .classpath
@@ -14,18 +14,20 @@ target/
 .idea/
 *.iml
 
-# Environment variables and local configuration
+# Environment variables and secrets
 
 .env
 .env.*
 !.env.example
 application-local.properties
 
-# Uploaded documents — do not publish private files
+# Uploaded documents
 
-uploads/
 secure-uploads/
+uploads/
 
 # Log files
 
 *.log
+/.apt_generated/
+/.apt_generated_tests/
