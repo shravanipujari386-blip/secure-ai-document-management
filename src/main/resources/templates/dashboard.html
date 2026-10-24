@@ -1,0 +1,257 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Dashboard | Secure Document Management</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <div class="brand">
+        <span class="brand-icon">🔐</span>
+        Secure Document Management
+    </div>
+
+    <form th:action="@{/logout}" method="post">
+        <button class="secondary" type="submit">Log out</button>
+    </form>
+
+</header>
+
+<main class="container">
+
+    <!-- WELCOME SECTION -->
+
+    <section class="welcome">
+
+        <p class="eyebrow">LAW ENFORCEMENT PORTAL</p>
+
+        <h1>Welcome to Your Dashboard</h1>
+
+        <p>Securely manage investigation cases and digital documents.</p>
+
+        <p>
+            <strong>Logged-in email:</strong>
+            <span th:text="${userEmail}"></span>
+        </p>
+
+        <p>
+            <strong>Your role:</strong>
+            <span th:text="${userRole}"></span>
+        </p>
+
+    </section>
+
+
+    <!-- INVESTIGATOR OFFICER WORKSPACE -->
+
+    
+     <section th:if="${userRole == 'ROLE_INVESTIGATOR_OFFICER'}">
+
+
+
+        <h2>Investigator Officer Workspace</h2>
+
+        <section class="cards">
+
+            <!-- CASE MANAGEMENT -->
+
+            <article class="card">
+
+                <div class="card-icon">📁</div>
+
+                <h2>Case Management</h2>
+
+                <p>Access investigation cases assigned to your account.</p>
+
+                <a th:href="@{/cases/my-cases}">View Assigned Cases</a>
+
+            </article>
+
+
+            <!-- OFFICIAL DOCUMENTS -->
+
+            <article class="card">
+
+                <div class="card-icon">📄</div>
+
+                <h2>Official Documents</h2>
+
+                <p>View documents uploaded and shared by the administrator.</p>
+
+                <a th:href="@{/documents}">
+                    View Documents
+                </a>
+
+            </article>
+
+
+            <!-- AI ANALYSIS -->
+
+            <article class="card">
+
+                <div class="card-icon">🧠</div>
+
+                <h2>AI Analysis</h2>
+
+                <p>Request AI-assisted summaries of authorized documents.</p>
+
+                <a th:href="@{/documents}">
+                    Analyze Documents
+                </a>
+
+            </article>
+
+
+            <!-- CASE SEARCH -->
+
+            <article class="card">
+
+                <div class="card-icon">🔎</div>
+
+                <h2>Case Search</h2>
+
+                <p>Search case records you are authorized to access.</p>
+
+                <span class="tag">Search module pending</span>
+
+            </article>
+
+        </section>
+
+    </section>
+
+
+    <!-- AUTHORIZED USER WORKSPACE -->
+
+    <section th:if="${userRole == 'ROLE_AUTHORIZED_USER'}">
+
+        <h2>Authorized User Workspace</h2>
+
+        <section class="cards">
+
+            <article class="card">
+
+                <div class="card-icon">📄</div>
+
+                <h2>Official Documents</h2>
+
+                <p>View documents made available by the administrator.</p>
+
+                <a th:href="@{/documents}">
+                    View Documents
+                </a>
+
+            </article>
+
+        </section>
+
+    </section>
+
+
+    <!-- ADMIN WORKSPACE -->
+
+    <section th:if="${userRole == 'ROLE_ADMIN'}">
+
+        <h2>Administrator Workspace</h2>
+
+        <section class="cards">
+
+            <!-- REGISTRATION REQUESTS -->
+
+            <article class="card">
+
+                <div class="card-icon">👥</div>
+
+                <h2>Registration Requests</h2>
+
+                <p>Review new user registration requests.</p>
+
+                <a th:href="@{/admin/registrations}">
+                    Review Requests
+                </a>
+
+            </article>
+
+
+            <!-- USER MANAGEMENT -->
+
+            <article class="card">
+
+                <div class="card-icon">🛡️</div>
+
+                <h2>User Management</h2>
+
+                <p>Manage account status and approved user roles.</p>
+
+                <a th:href="@{/admin/users}">
+                    Manage Users
+                </a>
+
+            </article>
+
+
+            <!-- DOCUMENT MANAGEMENT -->
+
+            <article class="card">
+
+                <div class="card-icon">📤</div>
+
+                <h2>Document Management</h2>
+
+                <p>Upload, view, and manage stored documents.</p>
+
+                <a th:href="@{/admin/documents}">
+                    Manage Documents
+                </a>
+
+            </article>
+
+        </section>
+
+    </section>
+
+
+    <!-- DEVELOPMENT NOTICE -->
+
+    <div class="notice info">
+
+        <strong>Development notice:</strong>
+
+        Case management, document permissions, AI processing, and
+        comprehensive audit logging must be implemented and tested
+        before using real law-enforcement records.
+
+    </div>
+    
+<div class="dashboard-card"
+     th:if="${userRole == 'ROLE_ADMIN'}">
+
+    <h3>Case Assignment</h3>
+
+    <p>Create investigation cases and assign them to investigator officers.</p>
+
+    <a th:href="@{/cases/assign}" class="btn">
+        Manage Case Assignments
+    </a>
+
+</div>
+
+    
+
+</main>
+
+<footer>
+    Secure Document Management System · Development scaffold
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,191 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Case Management | Law Enforcement Portal</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 25px;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            color: #14243a;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #64748b;
+        }
+
+        .back-link {
+            display: inline-block;
+            padding: 11px 16px;
+            background: #14243a;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 22px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 14px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #475569;
+            font-size: 13px;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            background: #dbeafe;
+            color: #1d4ed8;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 35px;
+            color: #64748b;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 14px;
+            }
+
+            .card {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <div>
+            <h1>Case Management</h1>
+            <p class="subtitle">
+                View investigation cases assigned to you.
+            </p>
+        </div>
+
+        <a class="back-link" th:href="@{/dashboard}">
+            Back to Dashboard
+        </a>
+    </div>
+
+    <div class="card">
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                <tr>
+                    <th>Case Number</th>
+                    <th>Case Title</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Assigned Date</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="caseItem : ${cases}">
+
+                    <td th:text="${caseItem.caseNumber}"></td>
+
+                    <td th:text="${caseItem.title}"></td>
+
+                    <td th:text="${caseItem.description}"></td>
+
+                    <td>
+                        <span class="status"
+                              th:text="${caseItem.status}">
+                        </span>
+                    </td>
+
+                    <td>
+                        <span th:if="${caseItem.assignedAt != null}"
+                              th:text="${#temporals.format(caseItem.assignedAt, 'dd MMM yyyy HH:mm')}">
+                        </span>
+
+                        <span th:unless="${caseItem.assignedAt != null}">
+                            —
+                        </span>
+                    </td>
+
+                </tr>
+
+                <tr th:if="${#lists.isEmpty(cases)}">
+                    <td colspan="5" class="empty">
+                        No cases have been assigned to you yet.
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
+

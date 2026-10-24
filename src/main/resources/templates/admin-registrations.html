@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Registration Requests | Administration</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <div class="brand">
+        🔐 Administration
+    </div>
+
+    <div>
+        <a th:href="@{/dashboard}">Dashboard</a>
+
+        <form th:action="@{/logout}" method="post">
+            <button type="submit">Log out</button>
+        </form>
+    </div>
+
+</header>
+
+<main class="container">
+
+    <h1>Registration Requests</h1>
+
+    <p class="notice info"
+       th:if="${successMessage}"
+       th:text="${successMessage}"></p>
+
+    <p class="notice"
+       th:if="${errorMessage}"
+       th:text="${errorMessage}"></p>
+
+    <div th:if="${#lists.isEmpty(pendingUsers)}">
+        <p>No pending registration requests.</p>
+    </div>
+
+    <table th:if="${!#lists.isEmpty(pendingUsers)}">
+
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Designation</th>
+            <th>Department</th>
+            <th>Requested Role</th>
+            <th>Registered</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        <tr th:each="user : ${pendingUsers}">
+
+            <td th:text="${user.fullName}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.designation}"></td>
+            <td th:text="${user.department}"></td>
+            <td th:text="${user.role}"></td>
+            <td th:text="${user.createdAt}"></td>
+
+            <td>
+
+                <form th:action="@{/admin/approve/{id}(id=${user.id})}"
+                      method="post">
+
+                    <button type="submit">Approve</button>
+
+                </form>
+
+                <form th:action="@{/admin/reject/{id}(id=${user.id})}"
+                      method="post">
+
+                    <button type="submit">Reject</button>
+
+                </form>
+
+            </td>
+
+        </tr>
+
+        </tbody>
+
+    </table>
+
+</main>
+
+</body>
+</html>

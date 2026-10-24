@@ -1,0 +1,356 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Assignment | Law Enforcement Portal</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        header {
+            background: #14243a;
+            color: white;
+            padding: 22px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border: 1px solid #64748b;
+            border-radius: 6px;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #14243a;
+        }
+
+        .description {
+            color: #64748b;
+            margin-bottom: 24px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font: inherit;
+            background: white;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        button {
+            background: #1d4ed8;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 13px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background: #1e40af;
+        }
+
+        .success {
+            padding: 13px;
+            border-radius: 6px;
+            background: #dcfce7;
+            color: #166534;
+            margin-bottom: 18px;
+        }
+
+        .error {
+            padding: 13px;
+            border-radius: 6px;
+            background: #fee2e2;
+            color: #991b1b;
+            margin-bottom: 18px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 14px 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #475569;
+            font-size: 13px;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: #dbeafe;
+            color: #1d4ed8;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .empty {
+            padding: 25px;
+            text-align: center;
+            color: #64748b;
+        }
+
+        @media (max-width: 650px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full-width {
+                grid-column: auto;
+            }
+
+            header {
+                padding: 20px;
+            }
+
+            main {
+                padding: 0 12px;
+            }
+
+            .card {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Law Enforcement Portal</h1>
+    <a th:href="@{/dashboard}">Back to Dashboard</a>
+</header>
+
+<main>
+
+    <section class="card">
+        <h2>Create & Assign Case</h2>
+
+        <p class="description">
+            Create an investigation case and assign responsibility to an approved investigator officer.
+        </p>
+
+        <div class="success"
+             th:if="${successMessage}"
+             th:text="${successMessage}">
+        </div>
+
+        <div class="error"
+             th:if="${errorMessage}"
+             th:text="${errorMessage}">
+        </div>
+
+        <form th:action="@{/cases/assign}"
+              th:object="${caseRecord}"
+              method="post">
+
+            <div class="form-grid">
+
+                <div class="field">
+                    <label for="caseNumber">Case Number</label>
+                    <input type="text"
+                           id="caseNumber"
+                           th:field="*{caseNumber}"
+                           placeholder="e.g. CASE-2026-001"
+                           maxlength="50"
+                           required>
+                </div>
+
+                <div class="field">
+                    <label for="title">Case Title</label>
+                    <input type="text"
+                           id="title"
+                           th:field="*{title}"
+                           placeholder="Enter case title"
+                           maxlength="200"
+                           required>
+                </div>
+
+                <div class="field full-width">
+                    <label for="description">Case Description</label>
+                    <textarea id="description"
+                              th:field="*{description}"
+                              placeholder="Enter case details"></textarea>
+                </div>
+
+                <div class="field">
+                    <label for="officerId">Assign Investigator Officer</label>
+
+                    <select id="officerId" name="officerId" required>
+                        <option value="">-- Select Officer --</option>
+
+                        <option th:each="officer : ${officers}"
+                                th:value="${officer.id}"
+                                th:text="${officer.fullName + ' (' + officer.email + ')'}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="status">Initial Status</label>
+
+                    <select id="status" th:field="*{status}">
+                        <option value="OPEN">Open</option>
+                        <option value="IN_PROGRESS">In Progress</option>
+                        <option value="CLOSED">Closed</option>
+                    </select>
+                </div>
+
+                <div class="field full-width">
+                    <button type="submit">Create and Assign Case</button>
+                </div>
+
+            </div>
+        </form>
+    </section>
+
+    <section class="card">
+        <h2>Case Assignment Records</h2>
+
+        <p class="description">
+            Review existing cases and their assigned officers.
+        </p>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                <tr>
+                    <th>Case Number</th>
+                    <th>Case Title</th>
+                    <th>Assigned Officer</th>
+                    <th>Assigned Email</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="caseItem : ${cases}">
+                    <td th:text="${caseItem.caseNumber}"></td>
+                    <td th:text="${caseItem.title}"></td>
+
+                    <td>
+                        <span th:if="${caseItem.assignedOfficer != null}"
+                              th:text="${caseItem.assignedOfficer.fullName}">
+                        </span>
+
+                        <span th:unless="${caseItem.assignedOfficer != null}">
+                            Not Assigned
+                        </span>
+                    </td>
+
+                    <td>
+                        <span th:if="${caseItem.assignedOfficer != null}"
+                              th:text="${caseItem.assignedOfficer.email}">
+                        </span>
+
+                        <span th:unless="${caseItem.assignedOfficer != null}">
+                            —
+                        </span>
+                    </td>
+
+                    <td>
+                        <span class="status"
+                              th:text="${caseItem.status}">
+                        </span>
+                    </td>
+                </tr>
+
+                <tr th:if="${#lists.isEmpty(cases)}">
+                    <td colspan="5" class="empty">
+                        No investigation cases have been created yet.
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</main>
+
+</body>
+</html>
+

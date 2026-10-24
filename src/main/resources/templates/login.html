@@ -1,0 +1,311 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Secure Document Management | Login</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            background: linear-gradient(135deg, #101c35, #1d3557);
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 440px;
+            padding: 35px;
+            background: #ffffff;
+            border-radius: 14px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+        }
+
+        .brand {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .brand-icon {
+            width: 65px;
+            height: 65px;
+            margin: 0 auto 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #e8eef9;
+            color: #1d3557;
+            border-radius: 50%;
+            font-size: 30px;
+        }
+
+        h1 {
+            color: #172b4d;
+            font-size: 24px;
+            margin-bottom: 9px;
+        }
+
+        .subtitle {
+            color: #68778d;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .role-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 7px;
+            margin-bottom: 25px;
+        }
+
+        .role {
+            text-align: center;
+            padding: 11px 5px;
+            border: 1px solid #dce3ed;
+            border-radius: 8px;
+            background: #f8faff;
+            color: #344563;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .role strong {
+            display: block;
+            font-size: 12px;
+            margin-bottom: 3px;
+        }
+
+        .field {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #24344d;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        input:focus {
+            border-color: #315da8;
+            box-shadow: 0 0 0 3px rgba(49, 93, 168, 0.12);
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 7px;
+            background: #1d3557;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .login-button:hover {
+            background: #284a78;
+        }
+
+        .message {
+            padding: 11px;
+            margin-bottom: 17px;
+            border-radius: 6px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .error {
+            color: #a61b1b;
+            background: #fff0f0;
+            border: 1px solid #ffd0d0;
+        }
+
+        .success {
+            color: #17643a;
+            background: #edfff4;
+            border: 1px solid #b9edcc;
+        }
+
+        .info {
+            color: #244b7a;
+            background: #eef5ff;
+            border: 1px solid #cbdcf6;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 23px;
+            font-size: 13px;
+            color: #68778d;
+        }
+
+        .register-link a {
+            color: #1d4f91;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        .security-note {
+            text-align: center;
+            margin-top: 24px;
+            padding-top: 17px;
+            border-top: 1px solid #e6eaf0;
+            color: #7b8798;
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 420px) {
+            .login-container {
+                padding: 25px 20px;
+            }
+
+            .role {
+                font-size: 10px;
+            }
+
+            .role strong {
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="login-container">
+
+    <div class="brand">
+        <div class="brand-icon">&#128274;</div>
+
+        <h1>Secure Document Portal</h1>
+
+        <p class="subtitle">
+            AI-Powered Digital Document Management System
+            <br>
+            For Law Enforcement
+        </p>
+    </div>
+
+    <div class="role-list">
+        <div class="role">
+            <strong>Admin</strong>
+            System management
+        </div>
+
+        <div class="role">
+            <strong>Officer</strong>
+            Case investigation
+        </div>
+
+        <div class="role">
+            <strong>Authorized User</strong>
+            Permitted access
+        </div>
+    </div>
+
+    <!-- Login error -->
+    <div th:if="${param.error}" class="message error">
+        Login failed. Check your work email and password.
+        Your account may also be pending approval or inactive.
+    </div>
+
+    <!-- Logout confirmation -->
+    <div th:if="${param.logout}" class="message success">
+        You have been logged out successfully.
+    </div>
+
+    <!-- Registration confirmation -->
+    <div th:if="${param.registered}" class="message success">
+        Your registration request has been submitted.
+        Please wait for administrator approval.
+    </div>
+
+    <!-- Pending account notice -->
+    <div th:if="${param.pending}" class="message info">
+        Your account is awaiting administrator approval.
+    </div>
+
+    <form th:action="@{/login}" method="post">
+
+        <div class="field">
+            <label for="username">Work Email</label>
+
+            <input
+                type="email"
+                id="username"
+                name="username"
+                placeholder="Enter your work email"
+                autocomplete="username"
+                required>
+        </div>
+
+        <div class="field">
+            <label for="password">Password</label>
+
+            <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+                autocomplete="current-password"
+                required>
+        </div>
+
+        <button type="submit" class="login-button">
+            Secure Login
+        </button>
+
+    </form>
+
+    
+<div class="register-link">
+    First time here?
+    <br><br>
+    <a th:href="@{/register}">
+        Request an Account
+    </a>
+    <p style="margin-top: 10px;">
+        New accounts require administrator approval.
+    </p>
+</div>
+
+<div class="security-note">
+    Protected Access | Authorized Personnel Only
+    <br>
+    Secure AI-Powered Digital Document Management System
+</div>
+
+</div>
+</body>
+</html>
+
+

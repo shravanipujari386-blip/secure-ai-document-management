@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Document</title>
+
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f3f6fb;
+        margin: 0;
+        padding: 35px 15px;
+        color: #172033;
+    }
+
+    .container {
+        max-width: 650px;
+        margin: auto;
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+        color: #17365d;
+        margin-top: 0;
+    }
+
+    label {
+        display: block;
+        margin: 18px 0 7px;
+        font-weight: bold;
+    }
+
+    input,
+    textarea,
+    select {
+        width: 100%;
+        padding: 11px;
+        border: 1px solid #ccd4df;
+        border-radius: 6px;
+        box-sizing: border-box;
+    }
+
+    textarea {
+        min-height: 100px;
+        resize: vertical;
+    }
+
+    .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 25px;
+    }
+
+    .button {
+        display: inline-block;
+        padding: 11px 18px;
+        border: none;
+        border-radius: 6px;
+        text-decoration: none;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .save {
+        background: #17365d;
+        color: white;
+    }
+
+    .cancel {
+        background: #e8edf4;
+        color: #17365d;
+    }
+
+    .note {
+        color: #566579;
+        font-size: 13px;
+    }
+
+    .message {
+        padding: 12px;
+        margin-bottom: 15px;
+        border-radius: 6px;
+    }
+
+    .error {
+        background: #fdecec;
+        color: #a61b1b;
+    }
+
+    .success {
+        background: #e8f7ed;
+        color: #176b35;
+    }
+</style>
+```
+
+</head>
+
+<body>
+
+<div class="container">
+
+```
+<h1>Edit Document</h1>
+
+<p class="note">
+    Update the document details below. Leave the replacement file
+    empty if you do not want to change the existing file.
+</p>
+
+<div class="message error"
+     th:if="${errorMessage != null}"
+     th:text="${errorMessage}">
+</div>
+
+<div class="message success"
+     th:if="${successMessage != null}"
+     th:text="${successMessage}">
+</div>
+
+<form th:action="@{/documents/{id}/update(id=${document.id})}"
+      method="post"
+      enctype="multipart/form-data">
+
+    <!-- CSRF protection for Spring Security -->
+    <input type="hidden"
+           th:if="${_csrf != null}"
+           th:name="${_csrf.parameterName}"
+           th:value="${_csrf.token}">
+
+    <label for="title">Document Title</label>
+
+    <input id="title"
+           type="text"
+           name="title"
+           th:value="${document.title}"
+           maxlength="200"
+           required>
+
+    <label for="description">Description</label>
+
+    <textarea id="description"
+              name="description"
+              maxlength="1000"
+              th:text="${document.description}"></textarea>
+
+    <label for="category">Category</label>
+
+    <select id="category" name="category" required>
+
+        <option value="CASE_DOCUMENT"
+                th:selected="${document.category == 'CASE_DOCUMENT'}">
+            Case Document
+        </option>
+
+        <option value="EVIDENCE"
+                th:selected="${document.category == 'EVIDENCE'}">
+            Evidence
+        </option>
+
+        <option value="REPORT"
+                th:selected="${document.category == 'REPORT'}">
+            Report
+        </option>
+
+        <option value="OTHER"
+                th:selected="${document.category == 'OTHER'}">
+            Other
+        </option>
+
+    </select>
+
+    <label for="replacementFile">
+        Replace Document File (Optional)
+    </label>
+
+    <input id="replacementFile"
+           type="file"
+           name="replacementFile"
+           accept=".pdf,.png,.jpg,.jpeg">
+
+    <p class="note"
+       th:text="|Current file: ${document.originalFileName}|">
+        Current file
+    </p>
+
+    <div class="actions">
+
+        <button type="submit" class="button save">
+            Save Changes
+        </button>
+
+        <a th:href="@{/documents}" class="button cancel">
+            Cancel
+        </a>
+
+    </div>
+
+</form>
+
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Manage Users | Secure Document Management</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 30px;
+            background: #f4f6fa;
+            color: #172033;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px #00000010;
+            overflow-x: auto;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+        }
+
+        .muted {
+            color: #667085;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            min-width: 650px;
+        }
+
+        th, td {
+            padding: 14px 12px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        th {
+            background: #153e75;
+            color: white;
+        }
+
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .role {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: #e0e7ff;
+            color: #3730a3;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .status {
+            font-weight: bold;
+        }
+
+        .success {
+            background: #d1e7dd;
+            color: #0f5132;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #842029;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 16px;
+            background: #153e75;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .empty {
+            padding: 25px;
+            text-align: center;
+            color: #667085;
+        }
+
+        .count {
+            font-size: 14px;
+            color: #667085;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <div>
+            <h1>Manage Users</h1>
+            <p class="muted">
+                View registered users and their assigned roles.
+            </p>
+        </div>
+
+        <a th:href="@{/dashboard}" class="button">
+            Back to Dashboard
+        </a>
+    </div>
+
+    <div th:if="${successMessage != null}"
+         class="success"
+         th:text="${successMessage}">
+    </div>
+
+    <div th:if="${errorMessage != null}"
+         class="error"
+         th:text="${errorMessage}">
+    </div>
+
+    <div class="card">
+
+        <h2>Registered Users</h2>
+
+        <p class="count">
+            Total users:
+            <strong th:text="${#lists.size(users)}">0</strong>
+        </p>
+
+        <div th:if="${#lists.isEmpty(users)}" class="empty">
+            No registered users found.
+        </div>
+
+        <table th:unless="${#lists.isEmpty(users)}">
+
+            <thead>
+                <tr>
+                    <th>Sr. No.</th>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Designation</th>
+                    <th>Role</th>
+                    <th>Account Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="user, iterStat : ${users}">
+
+                    <td th:text="${iterStat.count}">1</td>
+
+                    <td th:text="${user.fullName}">
+                        Full Name
+                    </td>
+
+                    <td th:text="${user.email}">
+                        email@example.com
+                    </td>
+
+                    <td th:text="${user.designation}">
+                        Designation
+                    </td>
+
+                    <td>
+                        <span class="role"
+                              th:text="${user.role}">
+                            OFFICER
+                        </span>
+                    </td>
+
+                    <td class="status"
+                        th:text="${user.accountStatus}">
+                        ACTIVE
+                    </td>
+
+                </tr>
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+</body>
+</html>
+

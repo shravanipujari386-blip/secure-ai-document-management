@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Official Documents</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background: #f4f6fa;
+            color: #172033;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 16px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #00000010;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 16px;
+            color: white;
+            background: #153e75;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-right: 8px;
+            margin-top: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .button:hover {
+            opacity: 0.88;
+        }
+
+        .edit-button {
+            background: #198754;
+        }
+        
+        
+         .ai-button {
+           background: #6f42c1;
+      }
+
+        
+
+        .upload-button {
+            background: #0d6efd;
+            margin-bottom: 15px;
+        }
+
+        .muted {
+            color: #667085;
+        }
+
+        .success-message {
+            background: #d1e7dd;
+            color: #0f5132;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #842029;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+        }
+
+        .page-actions {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Official Documents</h1>
+
+    <p class="muted">
+        View official documents and manage documents according to your permissions.
+    </p>
+
+    <!-- Success message -->
+    <div class="success-message"
+         th:if="${successMessage != null}"
+         th:text="${successMessage}">
+    </div>
+
+    <!-- Error message -->
+    <div class="error-message"
+         th:if="${errorMessage != null}"
+         th:text="${errorMessage}">
+    </div>
+
+    <!-- Upload button for the shared document page -->
+    <div class="page-actions">
+        <a th:href="@{/documents/upload}"
+           class="button upload-button">
+            + Upload Document
+        </a>
+    </div>
+
+    <!-- Empty document list -->
+    <div th:if="${#lists.isEmpty(documents)}" class="card">
+        No documents are currently available.
+    </div>
+
+    <!-- Document cards -->
+    <div class="card" th:each="doc : ${documents}">
+
+        <h3 th:text="${doc.title}">
+            Document Title
+        </h3>
+
+        <p>
+            <strong>Category:</strong>
+            <span th:text="${doc.category}"></span>
+        </p>
+
+        <p th:text="${doc.description}"></p>
+
+        <p class="muted">
+            Uploaded:
+            <span th:text="${doc.uploadedAt}"></span>
+        </p>
+
+        <!-- View document -->
+        <a class="button"
+           th:href="@{/documents/{id}/view(id=${doc.id})}"
+           target="_blank"
+           rel="noopener">
+            View Document
+        </a>
+
+
+        <!-- AI Analysis button -->
+        <a class="button ai-button"
+           th:href="@{/documents/{id}/analysis(id=${doc.id})}">
+            AI Analysis
+        </a>
+        
+        
+
+        
+
+
+
+        <!-- Edit button appears only when the user has permission -->
+        <a class="button edit-button"
+           th:if="${editableDocumentIds != null and editableDocumentIds.contains(doc.id)}"
+           th:href="@{/documents/{id}/edit(id=${doc.id})}">
+            Edit Document
+        </a>
+
+    </div>
+
+    <!-- Return to dashboard -->
+    <a class="button" th:href="@{/dashboard}">
+        Back to Dashboard
+    </a>
+
+</div>
+
+</body>
+</html>
+

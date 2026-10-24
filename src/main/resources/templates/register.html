@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Register | Secure Document Management</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<main class="container">
+
+    <section class="welcome">
+        <p class="eyebrow">LAW ENFORCEMENT PORTAL</p>
+        <h1>Request an Account</h1>
+        <p>Submit your details for administrator approval.</p>
+    </section>
+
+    <div class="notice info">
+        New accounts require administrator approval and email verification.
+    </div>
+
+    <p class="notice" th:if="${error}" th:text="${error}"></p>
+
+    <form th:action="@{/register}"
+          th:object="${registrationForm}"
+          method="post">
+
+        <label for="fullName">Full Name</label>
+        <input id="fullName" type="text"
+               th:field="*{fullName}" required maxlength="100">
+
+        <label for="email">Email Address</label>
+        <input id="email" type="email"
+               th:field="*{email}" required maxlength="150">
+
+        <label for="designation">Designation</label>
+        <input id="designation" type="text"
+               th:field="*{designation}" required maxlength="50">
+
+        <label for="department">Department</label>
+        <input id="department" type="text"
+               th:field="*{department}" required maxlength="100">
+
+        <label for="requestedRole">Requested Role</label>
+        <select id="requestedRole"
+                th:field="*{requestedRole}" required>
+            <option value="">Select your role</option>
+            <option value="INVESTIGATOR OFFICER">InvestigatorOfficer</option>
+            <option value="AUTHORIZED USER">AuthorizedUser</option>
+        </select>
+
+        <label for="password">Password</label>
+        <input id="password" type="password"
+               th:field="*{password}"
+               minlength="12" maxlength="72" required>
+
+        <button type="submit">Submit Registration</button>
+
+    </form>
+
+    <p>
+        Already registered?
+        <a th:href="@{/login}">Log in</a>
+    </p>
+
+</main>
+
+</body>
+</html>

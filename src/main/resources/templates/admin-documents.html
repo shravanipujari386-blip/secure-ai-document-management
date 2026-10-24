@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Document Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background: #f4f6fa;
+            color: #172033;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 10px #00000010;
+        }
+
+        input, textarea, select, button {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 11px;
+            margin: 8px 0;
+        }
+
+        button, .button {
+            background: #153e75;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 14px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            width: auto;
+        }
+
+        .delete {
+            background: #b42318;
+        }
+
+        .success { color: green; }
+        .error { color: #b42318; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        @media (max-width: 700px) {
+            .table-wrapper { overflow-x: auto; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Document Management</h1>
+    <p>Upload and manage official documents securely.</p>
+
+    <p class="success" th:if="${successMessage}"
+       th:text="${successMessage}"></p>
+
+    <p class="error" th:if="${errorMessage}"
+       th:text="${errorMessage}"></p>
+
+    <div class="card">
+        <h2>Upload Document</h2>
+
+        <form th:action="@{/admin/documents/upload}"
+              method="post" enctype="multipart/form-data">
+
+            <input type="hidden" th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}">
+
+            <label>Document Title</label>
+            <input type="text" name="title"
+                   maxlength="200" required>
+
+            <label>Description</label>
+            <textarea name="description"
+                      maxlength="1000"></textarea>
+
+            <label>Category</label>
+            <select name="category" required>
+                <option value="">Select category</option>
+                <option value="CASE_DOCUMENT">Case Document</option>
+                <option value="EVIDENCE">Evidence</option>
+                <option value="REPORT">Report</option>
+                <option value="OTHER">Other</option>
+            </select>
+
+            <label>Choose File (PDF, PNG, JPG, JPEG; maximum 10 MB)</label>
+            <input type="file" name="file"
+                   accept=".pdf,.png,.jpg,.jpeg"
+                   required>
+
+            <button type="submit">Upload Document</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>Uploaded Documents</h2>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Uploaded By</th>
+                    <th>Uploaded At</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="doc : ${documents}">
+                    <td th:text="${doc.title}"></td>
+                    <td th:text="${doc.category}"></td>
+                    <td th:text="${doc.uploadedBy}"></td>
+                    <td th:text="${doc.uploadedAt}"></td>
+
+                    <td>
+                        <a class="button"
+                           th:href="@{/documents/{id}/view(id=${doc.id})}"
+                           target="_blank" rel="noopener">
+                            View
+                        </a>
+
+                        <a class="button"
+                           th:href="@{/admin/documents/{id}/download(id=${doc.id})}">
+                            Download
+                        </a>
+
+                        <form th:action="@{/admin/documents/{id}/delete(id=${doc.id})}"
+                              method="post"
+                              style="display:inline"
+                              onsubmit="return confirm('Delete this document?');">
+
+                            <input type="hidden"
+                                   th:name="${_csrf.parameterName}"
+                                   th:value="${_csrf.token}">
+
+                            <button class="delete" type="submit">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+
+                <tr th:if="${#lists.isEmpty(documents)}">
+                    <td colspan="5">No documents uploaded yet.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <a class="button" th:href="@{/dashboard}">Back to Dashboard</a>
+</div>
+</body>
+</html>
+
