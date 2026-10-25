@@ -59,17 +59,55 @@ The current scaffold uses Spring Security form login, but it does **not** yet co
 - Basic responsive CSS
 - Dependencies for future PDF text extraction and testing
 
-## Not yet implemented
-- Database-backed authentication and account approval
-- Registration/email verification
-- Admin, Officer, Investigator authorization rules
-- Case-assignment enforcement
-- Document upload/download service and secure file storage
-- Audit service and audit event wiring
-- REST API controllers
-- JWT API authentication
-- AI summarization, classification, and intelligent search
-- A Postman collection
-- Automated integration/security tests
+## Implemented Features
 
-Do not use this starter scaffold with real confidential law-enforcement records. Complete and test the missing security and document controls first.
+### 1. User Authentication
+
+* User registration and login.
+* Authentication to restrict access to the application.
+
+### 2. Email Verification
+
+* Email verification during account registration.
+* Verification flow to help validate user email addresses.
+
+### 3. Document Management
+
+* Document upload functionality.
+* Integration with the document processing workflow.
+
+### 4. AI-Powered Document Analysis
+
+* AI-based analysis of uploaded documents.
+* Processing of document content to generate useful information and insights.
+
+### 5. Dashboard
+
+* Dashboard interface for accessing application functionality.
+* Centralized access to document management and analysis features.
+
+### 6. Database Integration
+
+* Database support for application data.
+* Spring Data JPA and Hibernate integration.
+
+### 7. Security
+
+* Spring Security integration.
+* Authentication and email verification workflows.
+
+## Future Enhancements
+
+The following features can be considered for future development, depending on the current implementation:
+
+* Role-based access control for administrators, officers, and investigators.
+* Case assignment and case-level access restrictions.
+* Comprehensive audit logging for security-sensitive operations.
+* Additional REST API endpoints and a Postman collection.
+* Automated integration and security testing.
+* Advanced AI-powered document classification and intelligent search.
+
+## Security Notice
+
+Although the application implements authentication, email verification, document uploads, and AI-powered document analysis, further security testing is necessary before using it with confidential law-enforcement records. Verify access permissions, document storage, data protection, and AI-processing safeguards before production deployment.
+
